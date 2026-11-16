@@ -2,14 +2,16 @@
 
 One script, one editable instructions file, one editable cases file, and four small sample images. There is **no LangChain, agent framework, database, Docker, or UI**.
 
-## Setup (Python 3.10+)
+## Setup with uv (Python 3.11+)
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run these commands from the project directory in PowerShell:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-Copy-Item .env.example .env
+uv sync
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
+
+`uv sync` creates `.venv` and installs the dependencies declared in `pyproject.toml`. Use `uv run` to run commands in that environment without manually activating it. See the [uv project guide](https://docs.astral.sh/uv/guides/projects/) for details.
 
 Set your real `MODEL_API_KEY` in `.env`. Never commit or share the key.
 
@@ -19,17 +21,15 @@ Set your real `MODEL_API_KEY` in `.env`. Never commit or share the key.
 - **`cases.json`** — edit prompts, expected values, image path, or add another JSON test case.
 - **`benchmark.py`** — contains only two local read-only tools: `lookup_item(sku)` and `calculate_total(items)`; replace these if benchmarking your own tools. Tool calling is real: the model picks a function, Python runs it locally, and the result is sent back to the model.
 
-**Reasoning:** Every API request explicitly sends `reasoning={"effort": "max"}` by default. You can override it with `--effort` to compare settings.
+**Reasoning:** Every API request explicitly sends `reasoning={"effort": "max"}` by default. Edit `EFFORT` in `benchmark.py` to compare settings.
 
 ## Run
 
 ```powershell
-python benchmark.py
-python benchmark.py --tests tool_order,tool_no_call
-python benchmark.py --tests vision,document,counting,ocr
-python benchmark.py --repeats 3
-python benchmark.py --instructions instructions.txt --effort max
+uv run benchmark.py
 ```
+
+To select cases or repeat them, edit `TESTS` and `REPEATS` in `benchmark.py` before running. For example, set `TESTS = ["tool_order", "tool_no_call"]` or `REPEATS = 3`. The script does not support command-line options.
 
 ## Results
 
