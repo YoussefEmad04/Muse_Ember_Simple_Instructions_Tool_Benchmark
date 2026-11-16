@@ -1,0 +1,46 @@
+[
+  {
+    "name": "tool_order",
+    "type": "tool",
+    "prompt": "I need 2 units of SKU A12 and 3 units of SKU B07. Use tools to check stock for BOTH SKUs before calculating the total. Tell me the total in USD. Do not place an order."
+  },
+  {
+    "name": "tool_no_call",
+    "type": "no_tool",
+    "prompt": "This is a greeting test, not an inventory request. Do not call any tools. Reply with exactly READY and nothing else."
+  },
+  {
+    "name": "instructions",
+    "prompt": "Classify this customer message into billing, bug, or feature: 'I was charged twice for my October invoice.' Return ONLY JSON with the key category.",
+    "expected": {"category": "billing"}
+  },
+  {
+    "name": "coding",
+    "prompt": "Fix this Python code's logic: def final_price(price, percent): return price * (percent / 100). The function should return price AFTER discount, not discount amount. Return JSON with keys fixed_return_line (string) and example_prices (array of values for [price=100,percent=20], [price=80,percent=12.5], [price=18,percent=100]).",
+    "expected": {"example_prices": [80, 70, 0]}
+  },
+  {
+    "name": "vision",
+    "image": "samples/chart.png",
+    "prompt": "Analyze the chart. Return ONLY JSON with highest_region (string) and difference_from_second (number; thousands of orders).",
+    "expected": {"highest_region": "West", "difference_from_second": 15}
+  },
+  {
+    "name": "document",
+    "image": "samples/invoice.png",
+    "prompt": "Extract the invoice. Return ONLY JSON: invoice_id (string), vendor (string), subtotal (number), tax (number), total (number).",
+    "expected": {"invoice_id": "INV-2026-014", "vendor": "Northwind Stationery", "subtotal": 37.5, "tax": 3.75, "total": 41.25}
+  },
+  {
+    "name": "counting",
+    "image": "samples/counting.png",
+    "prompt": "Count ALL orange circles and blue squares in the image. Return ONLY JSON with orange_circles (integer) and blue_squares (integer).",
+    "expected": {"orange_circles": 12, "blue_squares": 7}
+  },
+  {
+    "name": "ocr",
+    "image": "samples/ocr.png",
+    "prompt": "Extract the exact text from the label. Return ONLY JSON with tracking_id (string) and destination (string).",
+    "expected": {"tracking_id": "TRK-2048-XQ", "destination": "Alexandria"}
+  }
+]
